@@ -1,3 +1,5 @@
+from typing import List, Optional
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import yt_dlp
@@ -5,17 +7,24 @@ from ytmusicapi import YTMusic
 
 app = FastAPI()
 
-# Inicializamos (location a veces ayuda, pero la búsqueda es universal)
+
 ytmusic = YTMusic(language='es', location='ES')
 
-
-# --- MODELOS ---
+#aqui los dto, para
 class VideoRequest(BaseModel):
     url: str
 
+class CancionDepurada(BaseModel):
+    title:str
+    duration:str
+    artists:List[str]
+    views:str
+    url:str
+    photoRoute:str
+    album:Optional[str]
 
-# --- ENDPOINT 1: DESCARGAR ---
-@app.post("/descargar")
+
+@app.post("/api/descargar")
 async def descargar_mp3(request: VideoRequest):
     ydl_opts = {
         'format': 'bestaudio/best',
@@ -35,35 +44,68 @@ async def descargar_mp3(request: VideoRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/busqueda")
+async def busqueda(busqueda: str):
+    try:
+        print("buscando " , busqueda)
+        resultado = ytmusic.search(busqueda , filter="songs", limit=20)
+        resultadoFiltrado = []
+        for cancion in resultado:
+            #esta comprobación se hace, para ver si el Json que devuelve tiene en el diccionario
+            #videoId, asegurando así que es una canción , y no otra cosa.
+            if 'videoId' in cancion:
+                imagen = ""
+                if 'thumbnails' in cancion and cancion['thumbnails']:
+                    imagen = cancion['thumbnails'][-1]['url']
+                titulo = cancion.get('title')
+                duracion = cancion.get('duration')
+                artistas = []
+                if 'artists' in cancion and cancion['artists']:
+                    for artista in cancion['artists']:
+                        artistas.append(artista['name'])
+                urlDescarga = cancion['videoId']
+                urlDescarga = f"https://www.youtube.com/watch?v={urlDescarga}"
+                visualizaciones = cancion.get('views')
+                album = cancion.get('album' , {}).get('name')
 
-# --- ENDPOINT 2: VIRALES (Modo Búsqueda) ---
-@app.get("/virales")
+                objeto = CancionDepurada(
+                    title = titulo ,
+                    duration=duracion ,
+                    artists=artistas,
+                    views=visualizaciones ,
+                    url = urlDescarga,
+                    photoRoute = imagen,
+                    album = album
+
+
+
+                )
+                resultadoFiltrado.append(objeto)
+        return resultadoFiltrado
+
+
+
+
+    except Exception as e:
+        print(f"Error buscando canciones: {str(e)}")
+
+
+@app.get("/api/virales")
 async def obtener_virales():
     try:
         print("Buscando éxitos en España...")
-
-        # ESTRATEGIA SEGURA: Usar el buscador en lugar de los charts
-        # Buscamos "Top España" y filtramos solo por "songs" (canciones)
-        # limit=20 para tener margen por si alguna falla
         resultados = ytmusic.search("Top España", filter="songs", limit=20)
-
         lista_limpia = []
-
-        # Procesamos los 10 primeros resultados válidos
         contador = 1
         for track in resultados:
             if contador > 10:
                 break
-
-            # Solo procesamos si tiene videoId (es reproducible)
             if 'videoId' in track:
 
-                # Gestión segura de imagen
                 imagen = ""
                 if 'thumbnails' in track and track['thumbnails']:
                     imagen = track['thumbnails'][-1]['url']
 
-                # Gestión segura de artista
                 artista = "Desconocido"
                 if 'artists' in track and track['artists']:
                     artista = track['artists'][0]['name']

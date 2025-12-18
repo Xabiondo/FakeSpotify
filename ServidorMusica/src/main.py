@@ -1,5 +1,5 @@
-# Importamos el nombre correcto de la función
-from server import descargar_audio
+
+from server import descargar_mp3
 
 def run():
     print("--- BIENVENIDO AL DESCARGADOR DE MP3 (320kbps) ---")
@@ -7,7 +7,7 @@ def run():
 
     if url_usuario:
         # Usamos la función correcta
-        resultado = descargar_audio(url_usuario)
+        resultado = descargar_mp3(url_usuario)
         print(resultado)
     else:
         print("URL no válida.")
