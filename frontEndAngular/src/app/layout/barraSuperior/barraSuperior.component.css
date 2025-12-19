@@ -1,0 +1,51 @@
+.barra-fija {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 65px;
+  background-color: #000000;
+  border-bottom: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.contenedor-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.menu-central {
+  display: flex;
+  gap: 15px;
+}
+
+.boton-navegacion {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.boton-navegacion:hover {
+  color: white;
+  transform: scale(1.05);
+}
+
+.perfil-usuario {
+  background-color: #2a2a2a;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+}

@@ -3,10 +3,12 @@ import { RouterOutlet } from '@angular/router';
 import { CancionComponent } from './components/cancion/cancion.component';
 import { CancionModel } from './models/cancionModel';
 import { SpotifyService } from './services/spotify.service';
+import { BarraSuperior } from './layout/barraSuperior/barraSuperior.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CancionComponent],
+  standalone: true ,
+  imports: [RouterOutlet, CancionComponent , BarraSuperior],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
