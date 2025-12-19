@@ -1,0 +1,13 @@
+<div class="cancion-carta">
+    <img [src]="data.photoRoute">
+    <div class="cancion-informacion">
+        <h3>{{data.title}}</h3>
+        <p>{{data.duration}}</p>
+        <p>{{data.artists.join(',')}}</p>
+
+        @if (data.album){
+            <p>{{data.album}}</p>
+        }
+
+    </div>
+</div>

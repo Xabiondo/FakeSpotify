@@ -1,2 +1,6 @@
 
-<app-cancion></app-cancion>
+<p>Hola señores</p>
+
+@for ( item of canciones() ; track item.title){
+    <app-cancion [data]="item"></app-cancion>
+}
