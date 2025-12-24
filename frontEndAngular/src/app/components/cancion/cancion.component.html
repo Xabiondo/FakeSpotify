@@ -1,5 +1,5 @@
 <div class="cancion-carta">
-    <img [src]="data.photoRoute">
+    <img [src]="data.photoRoute" class="foto">
     <div class="cancion-informacion">
         <h3>{{data.title}}</h3>
         <p>{{data.duration}}</p>
@@ -8,6 +8,11 @@
         @if (data.album){
             <p>{{data.album}}</p>
         }
+        <button (click)="onClickPlay()">Reproducir canción</button>
 
+
+    </div>
+    <div class="descargar">
+        <img src="descargar.jpg" width="50px">
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CancionModel } from '../../models/cancionModel';
 
 @Component({
@@ -9,5 +9,13 @@ import { CancionModel } from '../../models/cancionModel';
 })
 export class CancionComponent {
   @Input({required : true}) data!: CancionModel;
+
+  @Output() escucharCancionFlag = new EventEmitter<string>() ; 
+
+  onClickPlay(){
+    this.escucharCancionFlag.emit(this.data.url)
+  }
+
+  
 
 }

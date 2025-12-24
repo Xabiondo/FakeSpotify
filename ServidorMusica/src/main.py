@@ -6,7 +6,7 @@ def run():
     url_usuario = input("Introduce la URL de YouTube: ").strip()
 
     if url_usuario:
-        # Usamos la función correcta
+
         resultado = descargar_mp3(url_usuario)
         print(resultado)
     else:

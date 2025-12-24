@@ -1,9 +1,11 @@
 from typing import List, Optional
+import requests
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import yt_dlp
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import StreamingResponse
 from ytmusicapi import YTMusic
 
 app = FastAPI()
@@ -37,8 +39,47 @@ class CancionDepurada(BaseModel):
     album:Optional[str]
 
 
+@app.get("/api/play")
+def obtener_url_streaming(videoId: str):
+
+    if "http" in videoId:
+        url_youtube = videoId
+    else:
+        url_youtube = f"https://www.youtube.com/watch?v={videoId}"
+
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'quiet': True,
+        'noplaylist': True,
+    }
+
+    try:
+
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url_youtube, download=False)
+            real_audio_url = info.get('url')
+            print(f"Haciendo puente de audio para: {info.get('title')}")
+
+
+        def iterfile():
+
+            with requests.get(real_audio_url, stream=True) as r:
+                for chunk in r.iter_content(chunk_size=1024 * 64):
+                    yield chunk
+
+        return StreamingResponse(iterfile(), media_type="audio/mp4")
+
+    except Exception as e:
+        print(f"Error streaming: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/descargarAngular")
+#async def descargar_audio(url : str , titulo : str):
+
+
 @app.post("/api/descargar")
-async def descargar_mp3(request: VideoRequest):
+def descargar_mp3(url):
     ydl_opts = {
         'format': 'bestaudio/best',
         'outtmpl': 'descargas/%(title)s.%(ext)s',
@@ -50,9 +91,9 @@ async def descargar_mp3(request: VideoRequest):
     }
 
     try:
-        print(f"Descargando: {request.url}")
+        print(f"Descargando: {url}")
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([request.url])
+            ydl.download([url])
         return {"status": "success", "mensaje": "Descarga completada"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -6,8 +6,11 @@
   </div>
 
   <nav class="menu-central">
-    <button class="boton-navegacion activo">Inicio</button>
-    <button class="boton-navegacion">Buscar</button>
+
+    <input #txtInput type="text" placeholder="Que quieres escuchar" class="input-cancion"
+    (keyup.enter)="mandarBusqueda(txtInput.value)">
+    <button class="boton-navegacion" (click)="mandarBusqueda(txtInput.value)">Buscar</button>
+
     <button class="boton-navegacion">Biblioteca</button>
   </nav>
 

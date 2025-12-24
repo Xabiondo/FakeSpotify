@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'barra-superior',
@@ -8,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrl: './barraSuperior.component.css',
 })
 export class BarraSuperior {
+
+  @Output() llamarFuncionBusqueda = new EventEmitter<string>(); 
+
+  mandarBusqueda(texto : string){
+    this.llamarFuncionBusqueda.emit(texto)
+  }
 
 }

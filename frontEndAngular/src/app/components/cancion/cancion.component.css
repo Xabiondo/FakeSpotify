@@ -1,7 +1,22 @@
-section{
-    max-width: 500px;
-    margin: 0 auto;
-    padding-top: 32px;
-    font-size: 24px;
+.cancion-carta{
+    display: flex;
+    margin: 20px auto;
+    border-style: solid ;
+    border-radius: 25px;
+    margin-top: 40px;
+    gap: 50px;
+    align-items: center;
+    max-width: 800px;
+
+    
 
 }
+
+.foto{
+    border-radius: 25px;
+    margin-left: 25px;
+}
+.descargar{
+    align-items: center;
+}
+
