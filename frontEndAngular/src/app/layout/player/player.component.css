@@ -1,0 +1,73 @@
+.barra-reproduccion {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background-color: #181818;
+    border-top: 1px solid #282828;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 9999;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+    font-family: sans-serif;
+}
+
+.info-izquierda {
+    display: flex;
+    align-items: center;
+    width: 30%;
+    min-width: 180px;
+}
+
+.caratula {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.detalles-cancion {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.titulo {
+    color: #ffffff;
+    font-size: 14px;
+    margin: 0 0 4px 0;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.artista, .album {
+    color: #b3b3b3;
+    font-size: 11px;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.controles-centro {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    max-width: 40%; 
+}
+
+.reproductor-nativo {
+    width: 100%;
+    height: 32px;
+    outline: none;
+    filter: invert(90%) hue-rotate(180deg);
+}

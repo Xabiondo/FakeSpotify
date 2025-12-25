@@ -1,0 +1,23 @@
+@if (cancion && urlAudio) {
+    <div class="barra-reproduccion">
+        
+        <div class="info-izquierda">
+            @if (cancion.photoRoute) {
+                <img [src]="cancion.photoRoute" class="caratula" alt="Portada">
+            }
+            
+            <div class="detalles-cancion">
+                <h3 class="titulo">{{ cancion.title }}</h3>
+                <p class="artista">{{ cancion.artists.join(', ') }}</p>
+                @if (cancion.album){
+                    <span class="album"> • {{ cancion.album }}</span>
+                }
+            </div>
+        </div>
+
+        <div class="controles-centro">
+            <audio [src]="urlAudio" controls autoplay class="reproductor-nativo"></audio>
+        </div>
+
+    </div>
+}

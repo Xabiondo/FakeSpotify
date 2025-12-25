@@ -5,15 +5,18 @@ import { CancionModel } from './models/cancionModel';
 import { SpotifyService } from './services/spotify.service';
 import { BarraSuperior } from './layout/barraSuperior/barraSuperior.component';
 import { NotExpr } from '@angular/compiler';
+import { Player } from './layout/player/player.component';
 
 @Component({
   selector: 'app-root',
   standalone: true ,
-  imports: [RouterOutlet, CancionComponent , BarraSuperior],
+  imports: [RouterOutlet, CancionComponent , BarraSuperior , Player],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit{
+
+  cancionActual:CancionModel|null = null
 
   
 
@@ -32,7 +35,8 @@ urlActual : string = ""
     this.canciones.set(datos)
   }
 
-  reproducirCancion(videoId: string){
-this.urlActual = `http://localhost:8000/api/play?videoId=${videoId}`;}
+  reproducirCancion(videoId: string , cancion:CancionModel){
+    this.cancionActual = cancion
+    this.urlActual = `http://localhost:8000/api/play?videoId=${videoId}`;}
 
 }
