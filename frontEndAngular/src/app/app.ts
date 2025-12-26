@@ -21,8 +21,8 @@ export class App implements OnInit{
   
 
   private spotifyService = inject(SpotifyService) ; 
-canciones = signal<CancionModel[]>([]);
-urlActual : string = ""
+  canciones = signal<CancionModel[]>([]);
+  urlActual : string = ""
 
   async ngOnInit() {
      const datos = await  this.spotifyService.getCancionesVirales();

@@ -29,6 +29,12 @@ ytmusic = YTMusic(language='es', location='ES')
 class VideoRequest(BaseModel):
     url: str
 
+class Playlist(BaseModel):
+    playlistId : str
+    playlistTitle : str
+    caratula : str
+    autor : str
+
 class CancionDepurada(BaseModel):
     title:str
     duration:str
@@ -76,6 +82,32 @@ def obtener_url_streaming(videoId: str):
 
 @app.get("/api/descargarAngular")
 #async def descargar_audio(url : str , titulo : str):
+
+@app.get("/api/playlist")
+async def buscarPlaylist(query:str ):
+    try:
+        resultados = ytmusic.search(query , filter="playlists" , limit=10)
+
+        playlistLimpia = []
+        for playlist in resultados:
+            playlistId = playlist.get('browseId')
+            playlistTitle = playlist.get('title')
+            caratula = playlist['thumbnails'][-1]['url']
+            autor = playlist.get('author')
+            playlistDepurada = Playlist(
+                playlistId = playlistId ,
+                playlistTitle = playlistTitle ,
+                caratula= caratula ,
+                autor = autor
+
+            )
+            playlistLimpia.append(playlistDepurada)
+        return playlistLimpia
+
+    except Exception as e :
+        print("error")
+
+
 
 
 @app.post("/api/descargar")
